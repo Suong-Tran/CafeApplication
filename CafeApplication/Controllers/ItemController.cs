@@ -10,11 +10,16 @@ namespace CafeApplication.Controllers
 {
     public class ItemController : Controller
     {
+        private static readonly HttpClient client;
+        static ItemController()
+        {
+          client = new HttpClient();
+          client.BaseAddress = new Uri("https://localhost:44327/api/");
+        }
         // GET: Item
         public ActionResult List()
         {
-          HttpClient client = new HttpClient() { };
-          string url = "https://localhost:44327/api/itemdata/listitems";
+          string url = "itemdata/listitems";
 
           HttpResponseMessage response = client.GetAsync(url).Result;
           IEnumerable<ItemDto> items = response.Content.ReadAsAsync<IEnumerable<ItemDto>>().Result;
@@ -25,8 +30,8 @@ namespace CafeApplication.Controllers
         // GET: Item/Details/5
         public ActionResult Details(int id)
         {
-          HttpClient client = new HttpClient() { };
-          string url = "https://localhost:44327/api/itemdata/finditem/"+id;
+
+          string url = "itemdata/finditem/"+id;
 
           HttpResponseMessage response = client.GetAsync(url).Result;
           ItemDto item = response.Content.ReadAsAsync<ItemDto>().Result;

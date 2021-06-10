@@ -1,12 +1,12 @@
-﻿@model CafeApplication.Models.Customer
+﻿@model CafeApplication.Models.CustomerDto
 @{
   ViewBag.Title = "Details";
 }
 
 <a href="/Customer/List">Back</a>
 <h2>Detail</h2>
-<h3>@Model.CustomerFName @Model.CustomerFName</h3>
+<h3>@Model.CustomerFName @Model.CustomerLName</h3>
 <div>Gender: @Model.CustomerGender</div>
 <div>Age: @Model.CustomerAge</div>
 <div>Regular: @Model.isRegular</div>
-<div>Favorite Item: @Model.favoriteItem</div>
+<div>Favorite Item: @Model.ItemName</div>

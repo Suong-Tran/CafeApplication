@@ -1,0 +1,55 @@
+﻿@*@model IEnumerable<CafeApplication.Models.CustomerDto>
+
+@{
+  ViewBag.Title = "List";
+}
+
+<h2>List</h2>
+@foreach (var customer in Model)
+{
+  <h3><a href="/Customer/Details/@customer.CustomerID">@customer.CustomerFName @customer.CustomerLName</a></h3>
+
+}*@
+<h2>Create new animal</h2>
+<form action="/Customer/Create" method="POST">
+  <div>
+    <label>First Name:</label> <input type="text" name="CustomerFName" />
+  </div>
+  <div>
+    <label>Last Name:</label> <input type="text" name="CustomerLName" />
+  </div>
+  <div>
+    <label>Age:</label> <input type="number" name="CustomerAge" />
+  </div>
+  <div>
+    <label>Gender:</label>
+    <input type="radio" id="male" name="gender" value="Male">
+    <label for="male">Male</label>
+    <input type="radio" id="female" name="gender" value="Female">
+    <label for="female">Female</label>
+    <input type="radio" id="other" name="gender" value="Other">
+    <label for="other">Other</label>
+  </div>
+  <div>
+    <label>Is Regular?</label>
+    <input type="radio" id="true" name="regular" value="True">
+    <label for="male">Yes</label>
+    <input type="radio" id="false" name="regular" value="False">
+    <label for="false">No</label>
+  </div>
+  @*<div>
+      <label>Favorite Item:</label>
+      <select name="ItemID">
+        @foreach (var item in Model)
+        {
+          <option value="@item.ItemName">@item.ItemName</option>
+
+        }
+      </select>
+    </div>*@
+  <div>
+    <input type="submit" value="Add Customer" />
+
+  </div>
+</form>
+

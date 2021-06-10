@@ -10,14 +10,20 @@ namespace CafeApplication.Controllers
 {
     public class CustomerController : Controller
     {
+        private static readonly HttpClient client;
+        static CustomerController()
+        {
+          client = new HttpClient();
+          client.BaseAddress = new Uri("https://localhost:44327/api/");
+        }
         // GET: Customer/List
         public ActionResult List()
         {
-            HttpClient client = new HttpClient() { };
-            string url = "https://localhost:44327/api/customerdata/listcustomers";
+            
+            string url = "customerdata/listcustomers";
 
             HttpResponseMessage response = client.GetAsync(url).Result;
-            IEnumerable<Customer> customers = response.Content.ReadAsAsync<IEnumerable<Customer>>().Result;
+            IEnumerable<CustomerDto> customers = response.Content.ReadAsAsync<IEnumerable<CustomerDto>>().Result;
 
             return View(customers);
         }
@@ -25,11 +31,11 @@ namespace CafeApplication.Controllers
         // GET: Customer/Details/5
         public ActionResult Details(int id)
         {
-            HttpClient client = new HttpClient() { };
-            string url = "https://localhost:44327/api/customerdata/findcustomer/"+id;
+            
+            string url = "customerdata/findcustomer/"+id;
 
             HttpResponseMessage response = client.GetAsync(url).Result;
-            Customer customer = response.Content.ReadAsAsync<Customer>().Result;
+            CustomerDto customer = response.Content.ReadAsAsync<CustomerDto>().Result;
 
             return View(customer);
         }

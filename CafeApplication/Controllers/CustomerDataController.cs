@@ -18,9 +18,23 @@ namespace CafeApplication.Controllers
 
         // GET: api/CustomerData/ListCustomers
         [HttpGet]
-        public IQueryable<Customer> ListCustomers()
+        public IEnumerable<CustomerDto> ListCustomers()
         {
-            return db.Customers;
+          List<Customer> Customers= db.Customers.ToList();
+          List<CustomerDto> CustomerDtos = new List<CustomerDto>();
+
+          Customers.ForEach(c => CustomerDtos.Add(new CustomerDto()
+          {
+            CustomerID = c.CustomerID,
+            CustomerFName = c.CustomerFName,
+            CustomerLName = c.CustomerLName,
+            CustomerGender = c.CustomerGender,
+            CustomerAge = c.CustomerAge,
+            isRegular = c.isRegular,
+            ItemID = c.Items.ItemID,
+            ItemName = c.Items.ItemName
+          }));
+          return CustomerDtos;
         }
 
         // GET: api/CustomerData/FindCustomer/5
@@ -28,13 +42,24 @@ namespace CafeApplication.Controllers
         [HttpGet]
         public IHttpActionResult FindCustomer(int id)
         {
-            Customer customer = db.Customers.Find(id);
-            if (customer == null)
+            Customer Customer = db.Customers.Find(id);
+            CustomerDto CustomerDto = new CustomerDto()
+            {
+              CustomerID = Customer.ItemID,
+              CustomerFName = Customer.CustomerFName,
+              CustomerLName = Customer.CustomerLName,
+              CustomerGender = Customer.CustomerGender,
+              CustomerAge = Customer.CustomerAge,
+              isRegular = Customer.isRegular,
+              ItemID = Customer.Items.ItemID,
+              ItemName = Customer.Items.ItemName
+            };
+            if (Customer == null)
             {
                 return NotFound();
             }
 
-            return Ok(customer);
+            return Ok(CustomerDto);
         }
 
         // POST: api/CustomerData/UpdateCustomer/5

@@ -8,13 +8,19 @@ using CafeApplication.Models;
 
 namespace CafeApplication.Controllers
 {
-    public class OrderController : Controller
-    {
+        public class OrderController : Controller
+        {
+        private static readonly HttpClient client;
+        static OrderController()
+        {
+          client = new HttpClient();
+          client.BaseAddress = new Uri("https://localhost:44327/api/");
+        }
         // GET: Order
         public ActionResult List()
         {
-            HttpClient client = new HttpClient() { };
-            string url = "https://localhost:44327/api/orderdata/listorders";
+
+            string url = "orderdata/listorders";
 
             HttpResponseMessage response = client.GetAsync(url).Result;
             IEnumerable<OrderDto> orders = response.Content.ReadAsAsync<IEnumerable<OrderDto>>().Result;
@@ -26,8 +32,8 @@ namespace CafeApplication.Controllers
         // GET: Order/Details/5
         public ActionResult Details(int id)
         {
-          HttpClient client = new HttpClient() { };
-          string url = "https://localhost:44327/api/orderdata/findorder/"+id;
+
+          string url = "orderdata/findorder/"+id;
 
           HttpResponseMessage response = client.GetAsync(url).Result;
           OrderDto order = response.Content.ReadAsAsync<OrderDto>().Result;
