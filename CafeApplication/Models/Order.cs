@@ -17,4 +17,13 @@ namespace CafeApplication.Models
     public virtual Customer Customers { get; set; }
     public ICollection<Item> Items { get; set; }
   }
+
+  public class OrderDto
+  {
+    public int OrderID { get; set; }
+    public int CustomerID { get; set; }
+    public string CustomerFName { get; set; }
+    public string CustomerLName { get; set; }
+    public DateTime OrderDate { get; set; }
+  }
 }
