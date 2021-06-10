@@ -1,0 +1,14 @@
+﻿@model IEnumerable<CafeApplication.Models.ItemDto>
+
+@{
+  ViewBag.Title = "List";
+}
+
+<h2>List</h2>
+@foreach (var item in Model)
+{
+  <h3><a href="/Item/Details/@item.ItemID">@item.ItemName</a></h3>
+  
+
+}
+

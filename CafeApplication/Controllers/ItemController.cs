@@ -8,39 +8,39 @@ using CafeApplication.Models;
 
 namespace CafeApplication.Controllers
 {
-    public class CustomerController : Controller
+    public class ItemController : Controller
     {
-        // GET: Customer/List
+        // GET: Item
         public ActionResult List()
         {
-            HttpClient client = new HttpClient() { };
-            string url = "https://localhost:44327/api/customerdata/listcustomers";
+          HttpClient client = new HttpClient() { };
+          string url = "https://localhost:44327/api/itemdata/listitems";
 
-            HttpResponseMessage response = client.GetAsync(url).Result;
-            IEnumerable<Customer> customers = response.Content.ReadAsAsync<IEnumerable<Customer>>().Result;
+          HttpResponseMessage response = client.GetAsync(url).Result;
+          IEnumerable<ItemDto> items = response.Content.ReadAsAsync<IEnumerable<ItemDto>>().Result;
 
-            return View(customers);
+          return View(items);
         }
 
-        // GET: Customer/Details/5
+        // GET: Item/Details/5
         public ActionResult Details(int id)
         {
-            HttpClient client = new HttpClient() { };
-            string url = "https://localhost:44327/api/customerdata/findcustomer/"+id;
+          HttpClient client = new HttpClient() { };
+          string url = "https://localhost:44327/api/itemdata/finditem/"+id;
 
-            HttpResponseMessage response = client.GetAsync(url).Result;
-            Customer customer = response.Content.ReadAsAsync<Customer>().Result;
+          HttpResponseMessage response = client.GetAsync(url).Result;
+          ItemDto item = response.Content.ReadAsAsync<ItemDto>().Result;
 
-            return View(customer);
+          return View(item);
         }
 
-        // GET: Customer/Create
+        // GET: Item/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Customer/Create
+        // POST: Item/Create
         [HttpPost]
         public ActionResult Create(FormCollection collection)
         {
@@ -56,13 +56,13 @@ namespace CafeApplication.Controllers
             }
         }
 
-        // GET: Customer/Edit/5
+        // GET: Item/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: Customer/Edit/5
+        // POST: Item/Edit/5
         [HttpPost]
         public ActionResult Edit(int id, FormCollection collection)
         {
@@ -78,13 +78,13 @@ namespace CafeApplication.Controllers
             }
         }
 
-        // GET: Customer/Delete/5
+        // GET: Item/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: Customer/Delete/5
+        // POST: Item/Delete/5
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {

@@ -1,0 +1,12 @@
+﻿@model CafeApplication.Models.Customer
+@{
+  ViewBag.Title = "Details";
+}
+
+<a href="/Customer/List">Back</a>
+<h2>Detail</h2>
+<h3>@Model.CustomerFName @Model.CustomerFName</h3>
+<div>Gender: @Model.CustomerGender</div>
+<div>Age: @Model.CustomerAge</div>
+<div>Regular: @Model.isRegular</div>
+<div>Favorite Item: @Model.favoriteItem</div>

@@ -1,0 +1,12 @@
+﻿@model CafeApplication.Models.ItemDto
+@{
+  ViewBag.Title = "Details";
+}
+
+<a href="/Item/List">Back</a>
+<h2>Details</h2>
+<h3>@Model.ItemName</h3>
+<div>Price: @Model.ItemPrice CAD</div>
+<div>Unit: @Model.ItemUnit</div>
+<div>Calories: @Model.ItemCalories cal</div>
+

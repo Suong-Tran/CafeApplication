@@ -1,0 +1,12 @@
+﻿@model IEnumerable<CafeApplication.Models.OrderDto>
+@{
+  ViewBag.Title = "List";
+}
+
+<h2>List</h2>
+@foreach(var order in Model)
+{
+  <h3><a href="/Order/Details/@order.OrderID">Order number: @order.OrderID</a></h3>
+  
+}
+

@@ -1,0 +1,11 @@
+﻿@model CafeApplication.Models.OrderDto
+@{
+  ViewBag.Title = "Details";
+}
+
+<a href="/Order/List">Back</a>
+<h2>Details</h2>
+<h3>Order number: @Model.OrderID</h3>
+<div>Customer: @Model.CustomerFName @Model.CustomerLName</div>
+<div>Purchase on: @Model.OrderDate.ToString("D")</div>
+
