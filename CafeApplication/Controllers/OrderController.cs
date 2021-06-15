@@ -5,12 +5,14 @@ using System.Web;
 using System.Web.Mvc;
 using System.Net.Http;
 using CafeApplication.Models;
+using System.Web.Script.Serialization;
 
 namespace CafeApplication.Controllers
 {
         public class OrderController : Controller
         {
         private static readonly HttpClient client;
+        private JavaScriptSerializer jss = new JavaScriptSerializer();
         static OrderController()
         {
           client = new HttpClient();
@@ -40,27 +42,41 @@ namespace CafeApplication.Controllers
 
           return View(order);
         }
-
-        // GET: Order/Create
-        public ActionResult Create()
+        public ActionResult Error()
         {
-            return View();
+
+          return View();
+        }
+
+    // GET: Order/Create
+    public ActionResult Create()
+        {
+          string url = "customerdata/listcustomers";
+          HttpResponseMessage response = client.GetAsync(url).Result;
+          IEnumerable<CustomerDto> CustomerOptions = response.Content.ReadAsAsync<IEnumerable<CustomerDto>>().Result;
+
+          return View(CustomerOptions);
         }
 
         // POST: Order/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(Order order)
         {
-            try
-            {
-                // TODO: Add insert logic here
+          string url = "orderdata/addorder/";
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+          string jsonpayload = jss.Serialize(order);
+          HttpContent content = new StringContent(jsonpayload);
+          content.Headers.ContentType.MediaType = "application/json";
+
+          HttpResponseMessage response = client.PostAsync(url, content).Result;
+          if (response.IsSuccessStatusCode)
+          {
+            return RedirectToAction("List");
+          }
+          else
+          {
+            return RedirectToAction("Error");
+          }
         }
 
         // GET: Order/Edit/5

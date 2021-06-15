@@ -1,19 +1,18 @@
-﻿@model IEnumerable<CafeApplication.Models.ItemDto>
-
+﻿@model CafeApplication.Models.ViewModels.DetailsCustomer
 @{
-  ViewBag.Title = "Create";
+  ViewBag.Title = "Edit";
 }
 
-<h2>Create new animal</h2>
-<form action="/Customer/Create" method="POST">
+<h2>Edit</h2>
+<form action="/Customer/Update/@Model.SelectedCustomer.CustomerID" method="POST">
   <div>
-    <label>First Name:</label> <input type="text" name="CustomerFName" />
+    <label>First Name:</label> <input type="text" name="CustomerFName" value="@Model.SelectedCustomer.CustomerFName" />
   </div>
   <div>
-    <label>Last Name:</label> <input type="text" name="CustomerLName" />
+    <label>Last Name:</label> <input type="text" name="CustomerLName" value="@Model.SelectedCustomer.CustomerLName" />
   </div>
   <div>
-    <label>Age:</label> <input type="number" name="CustomerAge" />
+    <label>Age:</label> <input type="number" name="CustomerAge" value="@Model.SelectedCustomer.CustomerAge" />
   </div>
   <div>
     <label>Gender:</label>
@@ -28,13 +27,13 @@
     <label>Is Regular?</label>
     <input type="radio" id="true" name="isRegular" value="True">
     <label for="male">Yes</label>
-    <input type="radio" id="false" name="isRegular" value="False">
+    <input type="radio" id="false" name="isRegular" value="">
     <label for="false">No</label>
   </div>
   <div>
     <label>Favorite Item:</label>
     <select name="ItemID">
-      @foreach (var item in Model)
+      @foreach (var item in Model.ItemOptions)
       {
         <option value="@item.ItemID">@item.ItemName</option>
 

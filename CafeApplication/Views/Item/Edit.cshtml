@@ -1,0 +1,31 @@
+﻿@model CafeApplication.Models.ItemDto
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+<form action="/Item/Update/@Model.ItemID" method="POST">
+  <div>
+    <label>Item Name:</label> <input type="text" name="@Model.ItemName" value="@Model.ItemName"/>
+  </div>
+  <div>
+    <label>Item Unit:</label>
+    <select name="@Model.ItemUnit">
+      <option value="Slice">Slice</option>
+      <option value="Cup">Cup</option>
+      <option value="Bowl">Bowl</option>
+      <option value="Whole Cake">Whole Cake</option>
+    </select>
+  </div>
+  <div>
+    <label>Item Calories (calories)":</label> <input type="number" name="@Model.ItemCalories" value="@Model.ItemCalories"/>
+  </div>
+  <div>
+    <label>Item Price (CAD)":</label> <input type="number" name="@Model.ItemPrice" min="0" value="@Model.ItemPrice" step=".01">
+  </div>
+  <div>
+    <input type="submit" value="Update Item" />
+
+  </div>
+</form>
+

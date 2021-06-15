@@ -16,7 +16,7 @@ namespace CafeApplication.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: api/ListItem
+        // GET: api/ListItems
         [HttpGet]
         public IEnumerable<ItemDto> ListItems()
         {

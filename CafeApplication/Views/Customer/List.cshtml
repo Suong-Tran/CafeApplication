@@ -5,6 +5,7 @@
 }
 
 <h2>List</h2>
+<a href="/Customer/Create">New Customer</a>
 @foreach (var customer in Model)
 {
   <h3><a href="/Customer/Details/@customer.CustomerID">@customer.CustomerFName @customer.CustomerLName</a></h3>

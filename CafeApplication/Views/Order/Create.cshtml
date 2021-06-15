@@ -1,0 +1,27 @@
+﻿@model IEnumerable<CafeApplication.Models.CustomerDto>
+@{
+  ViewBag.Title = "Create";
+}
+
+<h2>New</h2>
+<h2>Create new Order</h2>
+<form action="/Order/Create" method="POST">
+  <div>
+    <label>Customer Name:</label>
+    <select name="CustomerID">
+      @foreach (var customer in Model)
+      {
+        <option value="@customer.CustomerID">@customer.CustomerFName @customer.CustomerLName</option>
+
+      }
+    </select>
+  </div>
+  <div>
+    <label>Order Data:</label> <input type="date" name="OrderDate" />
+  </div>
+  <div>
+    <input type="submit" value="Add Order" />
+
+  </div>
+</form>
+

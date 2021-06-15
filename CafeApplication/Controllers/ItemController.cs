@@ -5,12 +5,15 @@ using System.Web;
 using System.Web.Mvc;
 using System.Net.Http;
 using CafeApplication.Models;
+using System.Web.Script.Serialization;
+using System.Diagnostics;
 
 namespace CafeApplication.Controllers
 {
     public class ItemController : Controller
     {
         private static readonly HttpClient client;
+        private JavaScriptSerializer jss = new JavaScriptSerializer();
         static ItemController()
         {
           client = new HttpClient();
@@ -38,49 +41,67 @@ namespace CafeApplication.Controllers
 
           return View(item);
         }
+        public ActionResult Error()
+        {
 
-        // GET: Item/Create
-        public ActionResult Create()
+          return View();
+        }
+
+    // GET: Item/Create
+    public ActionResult Create()
         {
             return View();
         }
 
         // POST: Item/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(Item item)
         {
-            try
-            {
-                // TODO: Add insert logic here
+          string url = "itemdata/additem/";
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+          string jsonpayload = jss.Serialize(item);
+          HttpContent content = new StringContent(jsonpayload);
+          content.Headers.ContentType.MediaType = "application/json";
+
+          HttpResponseMessage response = client.PostAsync(url, content).Result;
+          if (response.IsSuccessStatusCode)
+          {
+            return RedirectToAction("List");
+          }
+          else
+          {
+            return RedirectToAction("Error");
+          }
         }
 
         // GET: Item/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+          string url = "itemdata/finditem/" + id;
+          HttpResponseMessage response = client.GetAsync(url).Result;
+          ItemDto SelectedItem = response.Content.ReadAsAsync<ItemDto>().Result;
+          return View(SelectedItem);
         }
 
-        // POST: Item/Edit/5
+        // POST: Item/Update/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Update(int id, Item item)
         {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+          string url = "itemdata/updateitem/" + id;
+          string jsonpayload = jss.Serialize(item);
+          HttpContent content = new StringContent(jsonpayload);
+          content.Headers.ContentType.MediaType = "application/json";
+          HttpResponseMessage response = client.PostAsync(url, content).Result;
+      Debug.WriteLine("Holly Moly");
+      Debug.WriteLine(jsonpayload);
+      if (response.IsSuccessStatusCode)
+          {
+            return RedirectToAction("List");
+          }
+          else
+          {
+            return RedirectToAction("Error");
+          }
         }
 
         // GET: Item/Delete/5

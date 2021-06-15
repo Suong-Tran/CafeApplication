@@ -1,0 +1,35 @@
+﻿@model IEnumerable<CafeApplication.Models.ItemDto>
+
+@{
+  ViewBag.Title = "Create";
+}
+
+<h2>New</h2>
+
+<h2>Create new Item</h2>
+<form action="/Item/Create" method="POST">
+  <div>
+    <label>Item Name:</label> <input type="text" name="ItemName" />
+  </div>
+  <div>
+    <label>Item Unit:</label>
+    <select name="ItemUnit">
+      <option value="Slice">Slice</option>
+      <option value="Cup">Cup</option>
+      <option value="Bowl">Bowl</option>
+      <option value="Whole Cake">Whole Cake</option>
+    </select>
+  </div>
+  <div>
+    <label>Item Calories (calories)":</label> <input type="number" name="ItemCalories" />
+  </div>
+  <div>
+    <label>Item Price (CAD)":</label> <input type="number" name="ItemPrice" min="0" value="0" step=".01">
+  </div>
+  <div>
+    <input type="submit" value="Add Item" />
+
+  </div>
+</form>
+
+

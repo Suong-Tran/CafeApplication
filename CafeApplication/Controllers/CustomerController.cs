@@ -5,12 +5,15 @@ using System.Web;
 using System.Web.Mvc;
 using System.Net.Http;
 using CafeApplication.Models;
+using System.Web.Script.Serialization;
+using CafeApplication.Models.ViewModels;
 
 namespace CafeApplication.Controllers
 {
     public class CustomerController : Controller
     {
         private static readonly HttpClient client;
+        private JavaScriptSerializer jss = new JavaScriptSerializer();
         static CustomerController()
         {
           client = new HttpClient();
@@ -39,49 +42,82 @@ namespace CafeApplication.Controllers
 
             return View(customer);
         }
-
-        // GET: Customer/Create
-        public ActionResult Create()
+        public ActionResult Error()
         {
-            return View();
+
+          return View();
+        }
+
+    // GET: Customer/Create
+      public ActionResult Create()
+        {
+          string url = "itemdata/listitems";
+          HttpResponseMessage response = client.GetAsync(url).Result;
+          IEnumerable<ItemDto> ItemOptions = response.Content.ReadAsAsync<IEnumerable<ItemDto>>().Result;
+
+          return View(ItemOptions);
         }
 
         // POST: Customer/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(Customer customer)
         {
-            try
-            {
-                // TODO: Add insert logic here
+            string url = "customerdata/addcustomer/";
+      
+            string jsonpayload = jss.Serialize(customer);
+            HttpContent content = new StringContent(jsonpayload);
+            content.Headers.ContentType.MediaType = "application/json";
 
-                return RedirectToAction("Index");
-            }
-            catch
+            HttpResponseMessage response = client.PostAsync(url, content).Result;
+            if (response.IsSuccessStatusCode)
             {
-                return View();
+              return RedirectToAction("List");
             }
+            else
+            {
+              return RedirectToAction("Error");
+            }
+
         }
 
         // GET: Customer/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+          DetailsCustomer ViewModel = new DetailsCustomer();   
+
+          string url = "customerdata/findcustomer/" + id;
+          HttpResponseMessage response = client.GetAsync(url).Result;
+          CustomerDto SelectedCustomer = response.Content.ReadAsAsync<CustomerDto>().Result;
+          
+
+          url = "itemdata/listitems/";
+          response = client.GetAsync(url).Result;
+          IEnumerable<ItemDto> ItemOptions = response.Content.ReadAsAsync<IEnumerable<ItemDto>>().Result;
+
+          ViewModel.SelectedCustomer = SelectedCustomer;
+          ViewModel.ItemOptions = ItemOptions;
+
+          return View(ViewModel);
         }
 
-        // POST: Customer/Edit/5
+        // POST: Customer/Update/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Update(int id, Customer customer)
         {
-            try
-            {
-                // TODO: Add update logic here
+          string url = "customerdata/updatecustomer/" + id;
+          string jsonpayload = jss.Serialize(customer);
+          HttpContent content = new StringContent(jsonpayload);
+          content.Headers.ContentType.MediaType = "application/json";
+          HttpResponseMessage response = client.PostAsync(url, content).Result;
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+          if (response.IsSuccessStatusCode)
+          {
+            return RedirectToAction("List");
+          }
+          else
+          {
+            return RedirectToAction("Error");
+          }
         }
 
         // GET: Customer/Delete/5
