@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Net.Http;
 using CafeApplication.Models;
 using System.Web.Script.Serialization;
+using System.Diagnostics;
 
 namespace CafeApplication.Controllers
 {
@@ -82,45 +83,61 @@ namespace CafeApplication.Controllers
         // GET: Order/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+          string url = "orderdata/findorder/" + id;
+          HttpResponseMessage response = client.GetAsync(url).Result;
+          OrderDto SelectedOrder = response.Content.ReadAsAsync<OrderDto>().Result;
+          return View(SelectedOrder);
         }
 
         // POST: Order/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Update(int id, Order order)
         {
-            try
-            {
-                // TODO: Add update logic here
+          string url = "orderdata/updateorder/" + id;
+          string jsonpayload = jss.Serialize(order);
+      Debug.WriteLine(jsonpayload);
+          HttpContent content = new StringContent(jsonpayload);
+      Debug.WriteLine(content);
+      content.Headers.ContentType.MediaType = "application/json";
+          HttpResponseMessage response = client.PostAsync(url, content).Result;
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+          if (response.IsSuccessStatusCode)
+          {
+            return RedirectToAction("List");
+          }
+          else
+          {
+            return RedirectToAction("Error");
+          }
         }
 
         // GET: Order/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult DeleteConfirm(int id)
         {
-            return View();
+          string url = "orderdata/findorder/" + id;
+          HttpResponseMessage response = client.GetAsync(url).Result;
+          OrderDto SelectedOrder = response.Content.ReadAsAsync<OrderDto>().Result;
+          return View(SelectedOrder);
         }
 
         // POST: Order/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(int id, Order order)
         {
-            try
-            {
-                // TODO: Add delete logic here
+          string url = "orderdata/deleteorder/" + id;
+          string jsonpayload = jss.Serialize(order);
+          HttpContent content = new StringContent(jsonpayload);
+          content.Headers.ContentType.MediaType = "application/json";
+          HttpResponseMessage response = client.PostAsync(url, content).Result;
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+          if (response.IsSuccessStatusCode)
+          {
+            return RedirectToAction("List");
+          }
+          else
+          {
+            return RedirectToAction("Error");
+          }
         }
     }
 }

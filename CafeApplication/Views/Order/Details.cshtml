@@ -4,8 +4,10 @@
 }
 
 <a href="/Order/List">Back</a>
+<a href="/Order/Edit/@Model.OrderID">Update</a>
+<a href="/Order/DeleteConfirm/@Model.OrderID">Delete</a>
 <h2>Details</h2>
 <h3>Order number: @Model.OrderID</h3>
 <div>Customer: @Model.CustomerFName @Model.CustomerLName</div>
-<div>Purchase on: @Model.OrderDate.ToString("D")</div>
+<div>Purchase on: @Model.OrderDate.ToString("dd-MM-yyyy")</div>
 

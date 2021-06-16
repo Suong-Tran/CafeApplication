@@ -48,7 +48,7 @@ namespace CafeApplication.Controllers
         }
 
     // GET: Item/Create
-    public ActionResult Create()
+        public ActionResult Create()
         {
             return View();
         }
@@ -61,7 +61,8 @@ namespace CafeApplication.Controllers
 
           string jsonpayload = jss.Serialize(item);
           HttpContent content = new StringContent(jsonpayload);
-          content.Headers.ContentType.MediaType = "application/json";
+      Debug.WriteLine(jsonpayload);
+      content.Headers.ContentType.MediaType = "application/json";
 
           HttpResponseMessage response = client.PostAsync(url, content).Result;
           if (response.IsSuccessStatusCode)
@@ -92,9 +93,8 @@ namespace CafeApplication.Controllers
           HttpContent content = new StringContent(jsonpayload);
           content.Headers.ContentType.MediaType = "application/json";
           HttpResponseMessage response = client.PostAsync(url, content).Result;
-      Debug.WriteLine("Holly Moly");
-      Debug.WriteLine(jsonpayload);
-      if (response.IsSuccessStatusCode)
+
+          if (response.IsSuccessStatusCode)
           {
             return RedirectToAction("List");
           }
@@ -104,26 +104,32 @@ namespace CafeApplication.Controllers
           }
         }
 
-        // GET: Item/Delete/5
-        public ActionResult Delete(int id)
+        // GET: Item/DeleteConfirm/5
+        public ActionResult DeleteConfirm(int id)
         {
-            return View();
+          string url = "itemdata/finditem/" + id;
+          HttpResponseMessage response = client.GetAsync(url).Result;
+          ItemDto selectedItem = response.Content.ReadAsAsync<ItemDto>().Result;
+          return View(selectedItem);
         }
 
         // POST: Item/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(int id)
         {
-            try
-            {
-                // TODO: Add delete logic here
+          string url = "itemdata/deleteitem/" + id;
+          HttpContent content = new StringContent("");
+          content.Headers.ContentType.MediaType = "application/json";
+          HttpResponseMessage response = client.PostAsync(url, content).Result;
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+          if (response.IsSuccessStatusCode)
+          {
+            return RedirectToAction("List");
+          }
+          else
+          {
+            return RedirectToAction("Error");
+          }
         }
     }
 }

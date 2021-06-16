@@ -1,0 +1,23 @@
+﻿@model CafeApplication.Models.OrderDto
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+<form action="/Order/Update/@Model.OrderID" method="POST">
+  <h3>Order Number: @Model.OrderID</h3>
+  <div style="display:none;">
+    <input type="text" name="OrderID" value="@Model.OrderID" />
+  </div>
+  <div>
+    <label>Customer ID:</label> <input type="text" name="CustomerID" value="@Model.CustomerID" />
+  </div>
+  <div>
+    <label>Order Data:</label> <input type="date" name="OrderDate" value="@Model.OrderDate.ToString("dd-MM-yyyy")" />
+  </div>
+  <div>
+    <input type="submit" value="Update Item" />
+
+  </div>
+</form>
+

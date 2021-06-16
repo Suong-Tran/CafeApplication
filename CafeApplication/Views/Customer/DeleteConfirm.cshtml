@@ -1,0 +1,12 @@
+﻿@model CafeApplication.Models.CustomerDto
+
+@{
+  ViewBag.Title = "DeleteConfirm";
+}
+
+<h2>Are you sure you want to delete this customer?</h2>
+<a href="/Customer/List">Cancel</a>
+<h3>Name: @Model.CustomerFName @Model.CustomerLName </h3>
+<form action="/Customer/Delete/@Model.CustomerID" method="POST">
+  <input type="submit" value="Confirm Delete" />
+</form>

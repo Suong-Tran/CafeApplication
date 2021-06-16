@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -42,10 +43,12 @@ namespace CafeApplication.Controllers
         [HttpGet]
         public IHttpActionResult FindCustomer(int id)
         {
+      
             Customer Customer = db.Customers.Find(id);
-            CustomerDto CustomerDto = new CustomerDto()
+      Debug.WriteLine(Customer.ItemID);
+      CustomerDto CustomerDto = new CustomerDto()
             {
-              CustomerID = Customer.ItemID,
+              CustomerID = Customer.CustomerID,
               CustomerFName = Customer.CustomerFName,
               CustomerLName = Customer.CustomerLName,
               CustomerGender = Customer.CustomerGender,

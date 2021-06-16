@@ -34,13 +34,16 @@ namespace CafeApplication.Controllers
         // GET: Customer/Details/5
         public ActionResult Details(int id)
         {
-            
+
+
             string url = "customerdata/findcustomer/"+id;
 
             HttpResponseMessage response = client.GetAsync(url).Result;
-            CustomerDto customer = response.Content.ReadAsAsync<CustomerDto>().Result;
+            CustomerDto SelectedCustomer = response.Content.ReadAsAsync<CustomerDto>().Result;
 
-            return View(customer);
+
+
+            return View(SelectedCustomer);
         }
         public ActionResult Error()
         {
@@ -83,21 +86,10 @@ namespace CafeApplication.Controllers
         // GET: Customer/Edit/5
         public ActionResult Edit(int id)
         {
-          DetailsCustomer ViewModel = new DetailsCustomer();   
-
-          string url = "customerdata/findcustomer/" + id;
-          HttpResponseMessage response = client.GetAsync(url).Result;
-          CustomerDto SelectedCustomer = response.Content.ReadAsAsync<CustomerDto>().Result;
-          
-
-          url = "itemdata/listitems/";
-          response = client.GetAsync(url).Result;
-          IEnumerable<ItemDto> ItemOptions = response.Content.ReadAsAsync<IEnumerable<ItemDto>>().Result;
-
-          ViewModel.SelectedCustomer = SelectedCustomer;
-          ViewModel.ItemOptions = ItemOptions;
-
-          return View(ViewModel);
+      string url = "customerdata/findcustomer/" + id;
+      HttpResponseMessage response = client.GetAsync(url).Result;
+          CustomerDto SelectedCustomer= response.Content.ReadAsAsync<CustomerDto>().Result;
+          return View(SelectedCustomer);
         }
 
         // POST: Customer/Update/5
@@ -121,25 +113,32 @@ namespace CafeApplication.Controllers
         }
 
         // GET: Customer/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult DeleteConfirm(int id)
         {
-            return View();
+      string url = "customerdata/findcustomer/" + id;
+      HttpResponseMessage response = client.GetAsync(url).Result;
+          CustomerDto selectedcustomer = response.Content.ReadAsAsync<CustomerDto>().Result;
+          return View(selectedcustomer);
         }
 
         // POST: Customer/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(int id, Customer customer)
         {
-            try
-            {
-                // TODO: Add delete logic here
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+          string url = "customerdata/deletecustomer/" + id;
+          HttpContent content = new StringContent("");
+          content.Headers.ContentType.MediaType = "application/json";
+          HttpResponseMessage response = client.PostAsync(url, content).Result;
+
+          if (response.IsSuccessStatusCode)
+          {
+            return RedirectToAction("List");
+          }
+          else
+          {
+            return RedirectToAction("Error");
+          }
         }
     }
 }

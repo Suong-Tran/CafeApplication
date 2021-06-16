@@ -1,18 +1,22 @@
-﻿@model CafeApplication.Models.ViewModels.DetailsCustomer
+﻿@model CafeApplication.Models.CustomerDto
 @{
   ViewBag.Title = "Edit";
 }
 
 <h2>Edit</h2>
-<form action="/Customer/Update/@Model.SelectedCustomer.CustomerID" method="POST">
-  <div>
-    <label>First Name:</label> <input type="text" name="CustomerFName" value="@Model.SelectedCustomer.CustomerFName" />
+<form action="/Customer/Update/@Model.CustomerID" method="POST">
+  <div style="display:none;">
+    @* Pass through the Customer ID *@
+    <input type="text" name="CustomerID" value="@Model.CustomerID" />
   </div>
   <div>
-    <label>Last Name:</label> <input type="text" name="CustomerLName" value="@Model.SelectedCustomer.CustomerLName" />
+    <label>First Name:</label> <input type="text" name="CustomerFName" value="@Model.CustomerFName" />
   </div>
   <div>
-    <label>Age:</label> <input type="number" name="CustomerAge" value="@Model.SelectedCustomer.CustomerAge" />
+    <label>Last Name:</label> <input type="text" name="CustomerLName" value="@Model.CustomerLName" />
+  </div>
+  <div>
+    <label>Age:</label> <input type="number" name="CustomerAge" value="@Model.CustomerAge" />
   </div>
   <div>
     <label>Gender:</label>
@@ -27,21 +31,17 @@
     <label>Is Regular?</label>
     <input type="radio" id="true" name="isRegular" value="True">
     <label for="male">Yes</label>
-    <input type="radio" id="false" name="isRegular" value="">
+    <input type="radio" id="false" name="isRegular" value="False">
     <label for="false">No</label>
   </div>
-  <div>
-    <label>Favorite Item:</label>
-    <select name="ItemID">
-      @foreach (var item in Model.ItemOptions)
-      {
-        <option value="@item.ItemID">@item.ItemName</option>
-
-      }
-    </select>
+  <div >
+    <label>Favorite Item ID:</label><input type="text" name="ItemID" value="@Model.ItemID" />
   </div>
+  @*<div style="display:none;">
+    <label>Favorite Item:</label><input type="text" name="ItemName" value="@Model.ItemName" />
+  </div>*@
   <div>
-    <input type="submit" value="Add Customer" />
+    <input type="submit" value="Edit Customer" />
 
   </div>
 </form>
