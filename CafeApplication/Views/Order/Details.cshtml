@@ -1,13 +1,36 @@
-﻿@model CafeApplication.Models.OrderDto
+﻿@model CafeApplication.Models.ViewModels.DetailsItem
 @{
   ViewBag.Title = "Details";
 }
 
 <a href="/Order/List">Back</a>
-<a href="/Order/Edit/@Model.OrderID">Update</a>
-<a href="/Order/DeleteConfirm/@Model.OrderID">Delete</a>
+<a href="/Order/Edit/@Model.SelectedOrder.OrderID">Update</a>
+<a href="/Order/DeleteConfirm/@Model.SelectedOrder.OrderID">Delete</a>
 <h2>Details</h2>
-<h3>Order number: @Model.OrderID</h3>
-<div>Customer: @Model.CustomerFName @Model.CustomerLName</div>
-<div>Purchase on: @Model.OrderDate.ToString("dd-MM-yyyy")</div>
+<h3>Order number: @Model.SelectedOrder.OrderID</h3>
+<div>Customer: @Model.SelectedOrder.CustomerFName @Model.SelectedOrder.CustomerLName</div>
+<div>Purchase on: @Model.SelectedOrder.OrderDate.ToString("dd-MM-yyyy")</div>
+
+<h4>Items in this order</h4>
+@foreach (var item in Model.RelatedItems)
+{
+  <div>
+    <a href="/Item/Details/@item.ItemID">@item.ItemName</a>
+    <a style="text-decoration:none;" href="/Order/Unassociate/@Model.SelectedOrder.OrderID?ItemID=@item.ItemID">[x]</a>
+  </div>
+
+}
+<div>
+  <h4>Add an item to order @Model.SelectedOrder.OrderID</h4>
+  <form method="POST" action="/Order/Associate/@Model.SelectedOrder.OrderID">
+    <select name="ItemID">
+      @foreach (var notordered in Model.ItemNotOrdered)
+      {
+        <option value="@notordered.ItemID">@notordered.ItemName </option>
+      }
+
+    </select>
+    <input type="submit" value="Adding item" />
+  </form>
+</div>
 

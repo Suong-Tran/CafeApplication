@@ -51,13 +51,15 @@ namespace CafeApplication.Controllers
 
             return View(ViewModel);
         }
+        
+        //GET: Customer/Error
         public ActionResult Error()
         {
 
           return View();
         }
 
-    // GET: Customer/Create
+      // GET: Customer/Create
       public ActionResult Create()
         {
           string url = "itemdata/listitems";

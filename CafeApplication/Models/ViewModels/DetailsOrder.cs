@@ -9,5 +9,6 @@ namespace CafeApplication.Models.ViewModels
   {
     public CustomerDto SelectedCustomer { get; set; }
     public IEnumerable<OrderDto> RelatedOrders { get; set; }
+    public ItemDto SelecetedItem { get; set; }
   }
 }

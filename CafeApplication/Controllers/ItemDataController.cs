@@ -34,6 +34,48 @@ namespace CafeApplication.Controllers
             return ItemDtos;
         }
 
+        //GET: api/ListItemsForOrder/5
+        [HttpGet]
+        public IEnumerable<ItemDto> ListItemsForOrder(int id)
+        {
+          List<Item> Items = db.Items.Where(
+            i => i.Orders.Any(
+            o => o.OrderID == id)
+            ).ToList();
+          List<ItemDto> ItemDtos = new List<ItemDto>();
+
+          Items.ForEach(i => ItemDtos.Add(new ItemDto()
+          {
+            ItemID = i.ItemID,
+            ItemName = i.ItemName,
+            ItemCalories = i.ItemCalories,
+            ItemPrice = i.ItemPrice,
+            ItemUnit = i.ItemUnit
+          }));
+          return ItemDtos;
+        }
+
+        //GET: api/ListItemNotInOrder/5
+        [HttpGet]
+        public IEnumerable<ItemDto> ListItemsNotInOrder(int id)
+        {
+          List<Item> Items = db.Items.Where(
+            i => !i.Orders.Any(
+            o => o.OrderID == id)
+            ).ToList();
+          List<ItemDto> ItemDtos = new List<ItemDto>();
+
+          Items.ForEach(i => ItemDtos.Add(new ItemDto()
+          {
+            ItemID = i.ItemID,
+            ItemName = i.ItemName,
+            ItemCalories = i.ItemCalories,
+            ItemPrice = i.ItemPrice,
+            ItemUnit = i.ItemUnit
+          }));
+          return ItemDtos;
+        }
+
         // GET: api/ItemData/FindItem/5
         [ResponseType(typeof(Item))]
         [HttpGet]

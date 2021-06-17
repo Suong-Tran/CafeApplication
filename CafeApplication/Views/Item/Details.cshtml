@@ -1,4 +1,4 @@
-﻿@model CafeApplication.Models.ViewModels.DetailsCustomer
+﻿@model CafeApplication.Models.ViewModels.ItemRelationship
 @{
   ViewBag.Title = "Details";
 }
@@ -16,6 +16,14 @@
   @foreach (var customer in Model.RelatedCustomers)
   {
     <div><a href="/Customer/Details/@customer.CustomerID">@customer.CustomerFName @customer.CustomerLName</a></div>
+
+  }
+</div>
+<div style="margin-top:100px;">
+  <h4>Orders that have this item</h4>
+  @foreach (var order in Model.RelatedOrders)
+  {
+    <div><a href="/Order/Details/@order.OrderID">Order number @order.OrderID</a></div>
 
   }
 </div>

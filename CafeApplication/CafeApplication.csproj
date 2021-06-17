@@ -239,7 +239,8 @@
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Order.cs" />
-    <Compile Include="Models\ViewModels\DetailsCustomer.cs" />
+    <Compile Include="Models\ViewModels\ItemRelationship.cs" />
+    <Compile Include="Models\ViewModels\DetailsItem.cs" />
     <Compile Include="Models\ViewModels\DetailsOrder.cs" />
     <Compile Include="Models\ViewModels\UpdateCustomer.cs" />
     <Compile Include="Models\ViewModels\UpdateOrder.cs" />

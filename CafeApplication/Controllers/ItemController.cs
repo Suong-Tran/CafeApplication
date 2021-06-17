@@ -34,7 +34,7 @@ namespace CafeApplication.Controllers
         // GET: Item/Details/5
         public ActionResult Details(int id)
         {
-          DetailsCustomer ViewModel = new DetailsCustomer();
+          ItemRelationship ViewModel = new ItemRelationship();
 
           string url = "itemdata/finditem/"+id;
           HttpResponseMessage response = client.GetAsync(url).Result;
@@ -46,9 +46,15 @@ namespace CafeApplication.Controllers
           IEnumerable<CustomerDto> RelatedCustomers = response.Content.ReadAsAsync<IEnumerable<CustomerDto>>().Result;
           ViewModel.RelatedCustomers = RelatedCustomers;
 
+          url = "orderdata/listordersforitem/" + id;
+          response = client.GetAsync(url).Result;
+          IEnumerable<OrderDto> RelatedOrders = response.Content.ReadAsAsync<IEnumerable<OrderDto>>().Result;
+          ViewModel.RelatedOrders = RelatedOrders;
 
-          return View(ViewModel);
+      return View(ViewModel);
         }
+
+    
         public ActionResult Error()
         {
 

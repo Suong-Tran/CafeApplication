@@ -51,8 +51,66 @@ namespace CafeApplication.Controllers
           return OrderDtos;
         }
 
+        [HttpGet]
+        public IEnumerable<OrderDto> ListOrdersForItem(int id)
+        {
+          List<Order> Orders = db.Orders.Where(
+            o => o.Items.Any(
+            i => i.ItemID == id)
+          ).ToList();
+          List<OrderDto> OrderDtos = new List<OrderDto>();
+
+          Orders.ForEach(o => OrderDtos.Add(new OrderDto()
+          {
+            OrderID = o.OrderID,
+            CustomerID = o.Customers.CustomerID,
+            CustomerFName = o.Customers.CustomerFName,
+            CustomerLName = o.Customers.CustomerLName,
+            OrderDate = o.OrderDate
+          }));
+          return OrderDtos;
+        }
+
+        //POST : api/OrderData/AddingItemToOrder/5/3
+        [HttpPost]
+        [Route("api/OrderData/AddingItemToOrder/{orderid}/{itemid}")]
+        public IHttpActionResult AddingItemToOrder(int orderid, int itemid)
+        {
+          Order SelecetedOrder = db.Orders.Include(o => o.Items).Where(o => o.OrderID == orderid).FirstOrDefault();
+          Item SelecetedItem = db.Items.Find(itemid);
+
+          if(SelecetedOrder == null || SelecetedItem == null)
+          {
+            return NotFound();
+          }
+
+          SelecetedOrder.Items.Add(SelecetedItem);
+          db.SaveChanges();
+
+          return Ok();
+        }
+
+        //POST : api/OrderData/RemovingItemFromOrder/5/3
+        [HttpPost]
+        [Route("api/OrderData/RemovingItemFromOrder/{orderid}/{itemid}")]
+        public IHttpActionResult RemovingItemFromOrder(int orderid, int itemid)
+        {
+          Order SelecetedOrder = db.Orders.Include(o => o.Items).Where(o => o.OrderID == orderid).FirstOrDefault();
+          Item SelecetedItem = db.Items.Find(itemid);
+
+          if (SelecetedOrder == null || SelecetedItem == null)
+          {
+            return NotFound();
+          }
+
+          SelecetedOrder.Items.Remove(SelecetedItem);
+          db.SaveChanges();
+
+          return Ok();
+        }
+
     // GET: api/OrderData/FindOrder/5
-        [ResponseType(typeof(Order))]
+    [ResponseType(typeof(Order))]
         [HttpGet]
         public IHttpActionResult FindOrder(int id)
         {

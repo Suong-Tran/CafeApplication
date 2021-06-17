@@ -36,15 +36,53 @@ namespace CafeApplication.Controllers
         // GET: Order/Details/5
         public ActionResult Details(int id)
         {
+          DetailsItem ViewModel = new DetailsItem();
 
           string url = "orderdata/findorder/"+id;
-
           HttpResponseMessage response = client.GetAsync(url).Result;
-          OrderDto order = response.Content.ReadAsAsync<OrderDto>().Result;
+          OrderDto SelectedOrder = response.Content.ReadAsAsync<OrderDto>().Result;
+          ViewModel.SelectedOrder = SelectedOrder;
 
-          return View(order);
+          url = "itemdata/listitemsfororder/" + id;
+          response = client.GetAsync(url).Result;
+          IEnumerable<ItemDto> RelatedItems = response.Content.ReadAsAsync<IEnumerable<ItemDto>>().Result;
+          ViewModel.RelatedItems = RelatedItems;
+
+          url = "itemdata/listitemsnotinorder/" +id;
+          response = client.GetAsync(url).Result;
+          IEnumerable<ItemDto> ItemsNotOrdered = response.Content.ReadAsAsync<IEnumerable<ItemDto>>().Result;
+          ViewModel.ItemNotOrdered = ItemsNotOrdered;
+
+          return View(ViewModel);
         }
-        public ActionResult Error()
+     
+        //POST: Order/Associate/1
+        [HttpPost]
+        public ActionResult Associate(int id, int ItemID)
+        {
+          string url = "orderdata/addingitemtoorder/" + id + "/" + ItemID;
+          HttpContent content = new StringContent("");
+          content.Headers.ContentType.MediaType = "application/json";
+          HttpResponseMessage response = client.PostAsync(url, content).Result;
+
+
+          return RedirectToAction("Details/" + id);
+        }
+
+        //GET: Order/Unassociate/1?ItemID={ItemID}
+        [HttpGet]
+        public ActionResult Unassociate(int id, int ItemID)
+        {
+          string url = "orderdata/removingitemfromorder/" + id + "/" + ItemID;
+          HttpContent content = new StringContent("");
+          content.Headers.ContentType.MediaType = "application/json";
+          HttpResponseMessage response = client.PostAsync(url, content).Result;
+
+
+          return RedirectToAction("Details/" + id);
+        }
+
+    public ActionResult Error()
         {
 
           return View();

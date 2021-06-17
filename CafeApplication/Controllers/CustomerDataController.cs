@@ -17,6 +17,10 @@ namespace CafeApplication.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        /// <summary>
+        /// This will return a list of all customers as well the favorite item of the customers
+        /// </summary>
+        /// <returns>a list of customer and their associated item</returns>
         // GET: api/CustomerData/ListCustomers
         [HttpGet]
         public IEnumerable<CustomerDto> ListCustomers()
@@ -38,7 +42,12 @@ namespace CafeApplication.Controllers
           return CustomerDtos;
         }
 
-    //GET: api/CustomerData/ListCustomersForItem
+    /// <summary>
+    /// Gather information for all customers that has the same favorite item
+    /// </summary>
+    /// <param name="id">the item id</param>
+    /// <returns>all the customers that has the same fav item</returns>
+    //GET: api/CustomerData/ListCustomersForItem/5
     [HttpGet]
     public IEnumerable<CustomerDto> ListCustomersForItem(int id)
     {
@@ -59,8 +68,8 @@ namespace CafeApplication.Controllers
       return CustomerDtos;
     }
 
-    // GET: api/CustomerData/FindCustomer/5
-    [ResponseType(typeof(Customer))]
+      // GET: api/CustomerData/FindCustomer/5
+      [ResponseType(typeof(Customer))]
         [HttpGet]
         public IHttpActionResult FindCustomer(int id)
         {
