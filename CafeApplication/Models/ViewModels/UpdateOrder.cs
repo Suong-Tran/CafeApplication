@@ -5,9 +5,9 @@ using System.Web;
 
 namespace CafeApplication.Models.ViewModels
 {
-  public class DetailsCustomer
+  public class UpdateOrder
   {
-    public ItemDto SelectedItem { get; set; }
-    public IEnumerable<CustomerDto> RelatedCustomers { get; set; }
+    public OrderDto SelectedOrder { get; set; }
+    public IEnumerable<CustomerDto> CustomerOptions { get; set; }
   }
 }

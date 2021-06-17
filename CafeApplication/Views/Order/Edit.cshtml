@@ -1,19 +1,24 @@
-﻿@model CafeApplication.Models.OrderDto
+﻿@model CafeApplication.Models.ViewModels.UpdateOrder
 @{
     ViewBag.Title = "Edit";
 }
 
 <h2>Edit</h2>
-<form action="/Order/Update/@Model.OrderID" method="POST">
-  <h3>Order Number: @Model.OrderID</h3>
+<form action="/Order/Update/@Model.SelectedOrder.OrderID" method="POST">
+  <h3>Order Number: @Model.SelectedOrder.OrderID</h3>
   <div style="display:none;">
-    <input type="text" name="OrderID" value="@Model.OrderID" />
+    <input type="text" name="OrderID" value="@Model.SelectedOrder.OrderID" />
   </div>
+  <label>Customer Name:</label>
+  <select name="CustomerID">
+    @foreach (var customer in Model.CustomerOptions)
+    {
+      <option value="@customer.CustomerID">@customer.CustomerFName @customer.CustomerLName</option>
+
+    }
+  </select>
   <div>
-    <label>Customer ID:</label> <input type="text" name="CustomerID" value="@Model.CustomerID" />
-  </div>
-  <div>
-    <label>Order Data:</label> <input type="date" name="OrderDate" value="@Model.OrderDate.ToString("dd-MM-yyyy")" />
+    <label>Order Data:</label> <input type="date" name="OrderDate" value="@Model.SelectedOrder.OrderDate.ToString("dd-MM-yyyy")" />
   </div>
   <div>
     <input type="submit" value="Update Item" />

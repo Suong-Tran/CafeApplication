@@ -1,14 +1,22 @@
-﻿@model CafeApplication.Models.ItemDto
+﻿@model CafeApplication.Models.ViewModels.DetailsCustomer
 @{
   ViewBag.Title = "Details";
 }
 
 <a href="/Item/List">Back</a>
-<a href="/Item/Edit/@Model.ItemID">Update</a>
-<a href="/Item/DeleteConfirm/@Model.ItemID">Delete</a>
+<a href="/Item/Edit/@Model.SelectedItem.ItemID">Update</a>
+<a href="/Item/DeleteConfirm/@Model.SelectedItem.ItemID">Delete</a>
 <h2>Details</h2>
-<h3>@Model.ItemName</h3>
-<div>Price: @Model.ItemPrice CAD</div>
-<div>Unit: @Model.ItemUnit</div>
-<div>Calories: @Model.ItemCalories cal</div>
+<h3>@Model.SelectedItem.ItemName</h3>
+<div>Price: @Model.SelectedItem.ItemPrice CAD</div>
+<div>Unit: @Model.SelectedItem.ItemUnit</div>
+<div>Calories: @Model.SelectedItem.ItemCalories cal</div>
+<div style="margin-top:100px;">
+  <h4>Cutomers that have this as their favorite item</h4>
+  @foreach (var customer in Model.RelatedCustomers)
+  {
+    <div><a href="/Customer/Details/@customer.CustomerID">@customer.CustomerFName @customer.CustomerLName</a></div>
+
+  }
+</div>
 

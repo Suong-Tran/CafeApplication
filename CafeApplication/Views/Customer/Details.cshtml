@@ -1,15 +1,21 @@
-﻿@model CafeApplication.Models.CustomerDto
+﻿@model CafeApplication.Models.ViewModels.DetailsOrder
 @{
   ViewBag.Title = "Details";
 }
 
 <a href="/Customer/List">Back</a>
-<a href="/Customer/Edit/@Model.CustomerID">Update</a>
-<a href="/Customer/DeleteConfirm/@Model.CustomerID">Delete</a>
+<a href="/Customer/Edit/@Model.SelectedCustomer.CustomerID">Update</a>
+<a href="/Customer/DeleteConfirm/@Model.SelectedCustomer.CustomerID">Delete</a>
 <h2>Detail</h2>
-<div>@Model.CustomerID</div>
-<h3>@Model.CustomerFName @Model.CustomerLName</h3>
-<div>Gender: @Model.CustomerGender</div>
-<div>Age: @Model.CustomerAge</div>
-<div>Regular: @Model.isRegular</div>
-<div>Favorite Item: @Model.ItemName</div>
+<div>@Model.SelectedCustomer.CustomerID</div>
+<h3>@Model.SelectedCustomer.CustomerFName @Model.SelectedCustomer.CustomerLName</h3>
+<div>Gender: @Model.SelectedCustomer.CustomerGender</div>
+<div>Age: @Model.SelectedCustomer.CustomerAge</div>
+<div>Regular: @Model.SelectedCustomer.isRegular</div>
+<div>Favorite Item: @Model.SelectedCustomer.ItemName</div>
+<h4>Orders that this customer has purchased</h4>
+@foreach (var order in Model.RelatedOrders)
+{
+  <div><a href="/Order/Details/@order.OrderID">Order number: @order.OrderID on @order.OrderDate.ToString("dd-MM-yyyy")</a></div>
+
+}

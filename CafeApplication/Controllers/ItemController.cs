@@ -7,6 +7,7 @@ using System.Net.Http;
 using CafeApplication.Models;
 using System.Web.Script.Serialization;
 using System.Diagnostics;
+using CafeApplication.Models.ViewModels;
 
 namespace CafeApplication.Controllers
 {
@@ -33,13 +34,20 @@ namespace CafeApplication.Controllers
         // GET: Item/Details/5
         public ActionResult Details(int id)
         {
+          DetailsCustomer ViewModel = new DetailsCustomer();
 
           string url = "itemdata/finditem/"+id;
-
           HttpResponseMessage response = client.GetAsync(url).Result;
-          ItemDto item = response.Content.ReadAsAsync<ItemDto>().Result;
+          ItemDto SelectedItem= response.Content.ReadAsAsync<ItemDto>().Result;
+          ViewModel.SelectedItem = SelectedItem;
 
-          return View(item);
+          url = "customerdata/listcustomersforitem/" + id;
+          response = client.GetAsync(url).Result;
+          IEnumerable<CustomerDto> RelatedCustomers = response.Content.ReadAsAsync<IEnumerable<CustomerDto>>().Result;
+          ViewModel.RelatedCustomers = RelatedCustomers;
+
+
+          return View(ViewModel);
         }
         public ActionResult Error()
         {

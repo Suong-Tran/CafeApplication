@@ -38,15 +38,36 @@ namespace CafeApplication.Controllers
           return CustomerDtos;
         }
 
-        // GET: api/CustomerData/FindCustomer/5
-        [ResponseType(typeof(Customer))]
+    //GET: api/CustomerData/ListCustomersForItem
+    [HttpGet]
+    public IEnumerable<CustomerDto> ListCustomersForItem(int id)
+    {
+      List<Customer> Customers = db.Customers.Where(c => c.ItemID == id).ToList();
+      List<CustomerDto> CustomerDtos = new List<CustomerDto>();
+
+      Customers.ForEach(c => CustomerDtos.Add(new CustomerDto()
+      {
+        CustomerID = c.CustomerID,
+        CustomerFName = c.CustomerFName,
+        CustomerLName = c.CustomerLName,
+        CustomerGender = c.CustomerGender,
+        CustomerAge = c.CustomerAge,
+        isRegular = c.isRegular,
+        ItemID = c.Items.ItemID,
+        ItemName = c.Items.ItemName
+      }));
+      return CustomerDtos;
+    }
+
+    // GET: api/CustomerData/FindCustomer/5
+    [ResponseType(typeof(Customer))]
         [HttpGet]
         public IHttpActionResult FindCustomer(int id)
         {
       
             Customer Customer = db.Customers.Find(id);
       Debug.WriteLine(Customer.ItemID);
-      CustomerDto CustomerDto = new CustomerDto()
+          CustomerDto CustomerDto = new CustomerDto()
             {
               CustomerID = Customer.CustomerID,
               CustomerFName = Customer.CustomerFName,

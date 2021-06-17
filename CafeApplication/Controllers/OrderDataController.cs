@@ -34,7 +34,24 @@ namespace CafeApplication.Controllers
           return OrderDtos;
         }
 
-        // GET: api/OrderData/FindOrder/5
+        [HttpGet]
+        public IEnumerable<OrderDto> ListOrdersForCustomer(int id)
+        {
+          List<Order> Orders = db.Orders.Where(o => o.CustomerID == id).ToList();
+          List<OrderDto> OrderDtos = new List<OrderDto>();
+
+          Orders.ForEach(o => OrderDtos.Add(new OrderDto()
+          {
+            OrderID = o.OrderID,
+            CustomerID = o.Customers.CustomerID,
+            CustomerFName = o.Customers.CustomerFName,
+            CustomerLName = o.Customers.CustomerLName,
+            OrderDate = o.OrderDate
+          }));
+          return OrderDtos;
+        }
+
+    // GET: api/OrderData/FindOrder/5
         [ResponseType(typeof(Order))]
         [HttpGet]
         public IHttpActionResult FindOrder(int id)

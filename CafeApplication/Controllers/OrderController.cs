@@ -7,6 +7,7 @@ using System.Net.Http;
 using CafeApplication.Models;
 using System.Web.Script.Serialization;
 using System.Diagnostics;
+using CafeApplication.Models.ViewModels;
 
 namespace CafeApplication.Controllers
 {
@@ -49,8 +50,8 @@ namespace CafeApplication.Controllers
           return View();
         }
 
-    // GET: Order/Create
-    public ActionResult Create()
+        // GET: Order/Create
+        public ActionResult Create()
         {
           string url = "customerdata/listcustomers";
           HttpResponseMessage response = client.GetAsync(url).Result;
@@ -83,10 +84,19 @@ namespace CafeApplication.Controllers
         // GET: Order/Edit/5
         public ActionResult Edit(int id)
         {
+          UpdateOrder ViewModel = new UpdateOrder();
+
           string url = "orderdata/findorder/" + id;
           HttpResponseMessage response = client.GetAsync(url).Result;
           OrderDto SelectedOrder = response.Content.ReadAsAsync<OrderDto>().Result;
-          return View(SelectedOrder);
+          ViewModel.SelectedOrder = SelectedOrder;
+
+          url = "customerdata/listcustomers";
+          response = client.GetAsync(url).Result;
+          IEnumerable<CustomerDto> CustomerOptions = response.Content.ReadAsAsync<IEnumerable<CustomerDto>>().Result;
+          ViewModel.CustomerOptions = CustomerOptions;
+
+          return View(ViewModel);
         }
 
         // POST: Order/Edit/5
@@ -98,7 +108,7 @@ namespace CafeApplication.Controllers
       Debug.WriteLine(jsonpayload);
           HttpContent content = new StringContent(jsonpayload);
       Debug.WriteLine(content);
-      content.Headers.ContentType.MediaType = "application/json";
+          content.Headers.ContentType.MediaType = "application/json";
           HttpResponseMessage response = client.PostAsync(url, content).Result;
 
           if (response.IsSuccessStatusCode)

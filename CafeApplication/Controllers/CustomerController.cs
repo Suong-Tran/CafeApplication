@@ -34,16 +34,22 @@ namespace CafeApplication.Controllers
         // GET: Customer/Details/5
         public ActionResult Details(int id)
         {
-
-
+            DetailsOrder ViewModel = new DetailsOrder();
+            
             string url = "customerdata/findcustomer/"+id;
 
             HttpResponseMessage response = client.GetAsync(url).Result;
             CustomerDto SelectedCustomer = response.Content.ReadAsAsync<CustomerDto>().Result;
+            ViewModel.SelectedCustomer = SelectedCustomer;
+
+            url = "orderdata/listordersforcustomer/" + id;
+            response = client.GetAsync(url).Result;
+            IEnumerable<OrderDto> RelatedOrders = response.Content.ReadAsAsync<IEnumerable<OrderDto>>().Result;
+            ViewModel.RelatedOrders = RelatedOrders;
 
 
 
-            return View(SelectedCustomer);
+            return View(ViewModel);
         }
         public ActionResult Error()
         {
@@ -86,10 +92,19 @@ namespace CafeApplication.Controllers
         // GET: Customer/Edit/5
         public ActionResult Edit(int id)
         {
-      string url = "customerdata/findcustomer/" + id;
-      HttpResponseMessage response = client.GetAsync(url).Result;
+          UpdateCustomer ViewModel = new UpdateCustomer();
+
+          string url = "customerdata/findcustomer/" + id;
+          HttpResponseMessage response = client.GetAsync(url).Result;
           CustomerDto SelectedCustomer= response.Content.ReadAsAsync<CustomerDto>().Result;
-          return View(SelectedCustomer);
+          ViewModel.SelectedCustomer = SelectedCustomer;
+
+          url = "itemdata/listitems";
+          response = client.GetAsync(url).Result;
+          IEnumerable<ItemDto> ItemOptions = response.Content.ReadAsAsync<IEnumerable<ItemDto>>().Result;
+          ViewModel.ItemOptions = ItemOptions;
+
+          return View(ViewModel);
         }
 
         // POST: Customer/Update/5
