@@ -21,10 +21,10 @@ also be a function to upload image for the Items' views.
 update-database
 ```
 
-###Help
+### Help
 * Currently no advise needed for this project
 
-###Authors
+### Authors
 * [@Suong Dieu Tran](https://www.instagram.com/starolchen/)
 
 
