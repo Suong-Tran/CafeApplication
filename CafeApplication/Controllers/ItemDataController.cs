@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using CafeApplication.Models;
@@ -29,7 +31,9 @@ namespace CafeApplication.Controllers
               ItemName = i.ItemName,
               ItemCalories = i.ItemCalories,
               ItemPrice = i.ItemPrice,
-              ItemUnit = i.ItemUnit
+              ItemUnit = i.ItemUnit,
+              ItemHasPic = i.ItemHasPic,
+              PicExtension = i.PicExtension
             }));
             return ItemDtos;
         }
@@ -88,7 +92,9 @@ namespace CafeApplication.Controllers
               ItemName = Item.ItemName,
               ItemCalories = Item.ItemCalories,
               ItemPrice = Item.ItemPrice,
-              ItemUnit = Item.ItemUnit
+              ItemUnit = Item.ItemUnit,
+              ItemHasPic = Item.ItemHasPic,
+              PicExtension = Item.PicExtension
             };
             if (Item == null)
             {
@@ -114,6 +120,8 @@ namespace CafeApplication.Controllers
             }
 
             db.Entry(item).State = EntityState.Modified;
+            db.Entry(item).Property(i => i.ItemHasPic).IsModified = false;
+            db.Entry(item).Property(i => i.PicExtension).IsModified = false;
 
             try
             {
@@ -132,6 +140,56 @@ namespace CafeApplication.Controllers
             }
 
             return StatusCode(HttpStatusCode.NoContent);
+        }
+     
+        [HttpPost]
+        public IHttpActionResult UploadItemPic(int id)
+        {
+          bool hasPic = false;
+          string picextension;
+          if (Request.Content.IsMimeMultipartContent())
+          {
+            int numfiles = HttpContext.Current.Request.Files.Count;
+            if(numfiles == 1 && HttpContext.Current.Request.Files[0] != null)
+            {
+              var itemPic = HttpContext.Current.Request.Files[0];
+              if(itemPic.ContentLength > 0)
+              {
+                var valtype = new[] { "jpeg", "jpg", "png", "gif" };
+                var extension = Path.GetExtension(itemPic.FileName).Substring(1);
+                if (valtype.Contains(extension))
+                {
+                  try
+                  {
+                    string fn = id + "." + extension;
+                    string path = Path.Combine(HttpContext.Current.Server.MapPath("~/Content/Images/Items/"), fn);
+
+                    itemPic.SaveAs(path);
+
+                    hasPic = true;
+                    picextension = extension;
+
+                    Item SelectedItem = db.Items.Find(id);
+                    SelectedItem.ItemHasPic = hasPic;
+                    SelectedItem.PicExtension = picextension;
+                    db.Entry(SelectedItem).State = EntityState.Modified;
+
+                    db.SaveChanges();
+                  } 
+                  catch(Exception ex)
+                  {
+                    return BadRequest();
+                  }
+                }
+              }
+            }
+            return Ok();
+          } else
+          {
+            return BadRequest();
+          }
+
+      
         }
 
         // POST: api/ItemData/AddItem
@@ -159,6 +217,16 @@ namespace CafeApplication.Controllers
             if (item == null)
             {
                 return NotFound();
+            }
+
+            if (item.ItemHasPic && item.PicExtension != "")
+            {
+              //also delete image from path
+              string path = HttpContext.Current.Server.MapPath("~/Content/Images/Items/" + id + "." + item.PicExtension);
+              if (System.IO.File.Exists(path))
+              {
+                System.IO.File.Delete(path);
+              }
             }
 
             db.Items.Remove(item);

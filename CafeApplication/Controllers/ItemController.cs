@@ -100,7 +100,7 @@ namespace CafeApplication.Controllers
 
         // POST: Item/Update/5
         [HttpPost]
-        public ActionResult Update(int id, Item item)
+        public ActionResult Update(int id, Item item, HttpPostedFileBase ItemPic)
         {
           string url = "itemdata/updateitem/" + id;
           string jsonpayload = jss.Serialize(item);
@@ -108,10 +108,21 @@ namespace CafeApplication.Controllers
           content.Headers.ContentType.MediaType = "application/json";
           HttpResponseMessage response = client.PostAsync(url, content).Result;
 
-          if (response.IsSuccessStatusCode)
+          if (response.IsSuccessStatusCode && ItemPic != null)
           {
+            url = "itemdata/uploaditempic/" + id;
+
+            MultipartFormDataContent requestcontent = new MultipartFormDataContent();
+            HttpContent imagecontent = new StreamContent(ItemPic.InputStream);
+            requestcontent.Add(imagecontent, "ItemPic", ItemPic.FileName);
+            response = client.PostAsync(url, requestcontent).Result;
+
             return RedirectToAction("List");
           }
+          else if(response.IsSuccessStatusCode)
+          {
+            return RedirectToAction("List");
+          } 
           else
           {
             return RedirectToAction("Error");

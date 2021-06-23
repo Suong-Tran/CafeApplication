@@ -4,32 +4,40 @@
 }
 
 <h2>Edit</h2>
-<form action="/Item/Update/@Model.ItemID" method="POST">
-  <div style="display:none;">
-    @* Pass through the Item ID *@
-    <input type="text" name="ItemID" value="@Model.ItemID" />
-  </div>
-  <div>
-    <label>Item Name:</label> <input type="text" name="ItemName" value="@Model.ItemName" />
-  </div>
-  <div>
-    <label>Item Unit:</label>
-    <select name="ItemUnit">
-      <option value="Slice">Slice</option>
-      <option value="Cup">Cup</option>
-      <option value="Bowl">Bowl</option>
-      <option value="Whole Cake">Whole Cake</option>
-    </select>
-  </div>
-  <div>
-    <label>Item Calories (calories)":</label> <input type="number" name="ItemCalories" value="@Model.ItemCalories" />
-  </div>
-  <div>
-    <label>Item Price (CAD)":</label> <input type="number" name="ItemPrice" min="0" value="@Model.ItemPrice" step=".01">
-  </div>
-  <div>
-    <input type="submit" value="Update Item" />
+<form action="/Item/Update/@Model.ItemID" method="POST" enctype="multipart/form-data">
+  <div class="row">
+    <div class="col-md-6 col-sm-12">
+      <div style="display:none;">
+        @* Pass through the Item ID *@
+        <input type="text" name="ItemID" value="@Model.ItemID" />
+      </div>
+      <div>
+        <label>Item Name:</label> <input type="text" name="ItemName" value="@Model.ItemName" />
+      </div>
+      <div>
+        <label>Item Unit:</label>
+        <select name="ItemUnit">
+          <option value="Slice">Slice</option>
+          <option value="Cup">Cup</option>
+          <option value="Bowl">Bowl</option>
+          <option value="Whole Cake">Whole Cake</option>
+        </select>
+      </div>
+      <div>
+        <label>Item Calories (calories)":</label> <input type="number" name="ItemCalories" value="@Model.ItemCalories" />
+      </div>
+      <div>
+        <label>Item Price (CAD)":</label> <input type="number" name="ItemPrice" min="0" value="@Model.ItemPrice" step=".01">
+      </div>
+      <div>
+        <input type="submit" value="Update Item" />
 
+      </div>
+    </div>
+    <div class="col-md-6 col-sm-12">
+      <input type="file" name="ItemPic" />
+    </div>
   </div>
+  
 </form>
 

@@ -2,20 +2,33 @@
 @{
   ViewBag.Title = "Details";
 }
+<div class="row">
+  <div class="col-sm-4"><a href="/Customer/List">Back</a></div>
+  <div class="col-sm-4"><a href="/Customer/Edit/@Model.SelectedCustomer.CustomerID">Update</a></div>
+  <div class="col-sm-4"><a href="/Customer/DeleteConfirm/@Model.SelectedCustomer.CustomerID">Delete</a></div>
+</div>
 
-<a href="/Customer/List">Back</a>
-<a href="/Customer/Edit/@Model.SelectedCustomer.CustomerID">Update</a>
-<a href="/Customer/DeleteConfirm/@Model.SelectedCustomer.CustomerID">Delete</a>
+
+
+
 <h2>Detail</h2>
-<div>@Model.SelectedCustomer.CustomerID</div>
-<h3>@Model.SelectedCustomer.CustomerFName @Model.SelectedCustomer.CustomerLName</h3>
-<div>Gender: @Model.SelectedCustomer.CustomerGender</div>
-<div>Age: @Model.SelectedCustomer.CustomerAge</div>
-<div>Regular: @Model.SelectedCustomer.isRegular</div>
-<div>Favorite Item: @Model.SelectedCustomer.ItemName</div>
-<h4>Orders that this customer has purchased</h4>
-@foreach (var order in Model.RelatedOrders)
-{
-  <div><a href="/Order/Details/@order.OrderID">Order number: @order.OrderID on @order.OrderDate.ToString("dd-MM-yyyy")</a></div>
+<div class="row">
+  <div class="col-md-6 col-sm-12">
+    <h3>@Model.SelectedCustomer.CustomerFName @Model.SelectedCustomer.CustomerLName</h3>
+    <div>Gender: @Model.SelectedCustomer.CustomerGender</div>
+    <div>Age: @Model.SelectedCustomer.CustomerAge</div>
+    <div>Regular: @Model.SelectedCustomer.isRegular</div>
+    <div>Favorite Item: @Model.SelectedCustomer.ItemName</div>
+  </div>
+  <div class="col-md-6 col-sm-12">
+    <h4>Orders that this customer has purchased</h4>
+    @foreach (var order in Model.RelatedOrders)
+    {
+      <div><a href="/Order/Details/@order.OrderID">Order number: @order.OrderID on @order.OrderDate.ToString("dd-MM-yyyy")</a></div>
 
-}
+    }
+  </div>
+
+</div>
+
+

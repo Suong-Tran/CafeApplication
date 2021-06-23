@@ -15,6 +15,8 @@ namespace CafeApplication.Models
     public string ItemUnit { get; set; }
     public int ItemCalories { get; set; }
     public decimal ItemPrice { get; set; }
+    public bool ItemHasPic { get; set; }
+    public string PicExtension { get; set; }
     public ICollection<Order> Orders { get; set; }
   }
 
@@ -27,5 +29,7 @@ namespace CafeApplication.Models
     public string ItemUnit { get; set; }
     public int ItemCalories { get; set; }
     public decimal ItemPrice { get; set; }
+    public bool ItemHasPic { get; set; }
+    public string PicExtension { get; set; }
   }
 }
