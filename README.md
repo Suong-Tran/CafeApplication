@@ -37,4 +37,4 @@ update-database
 * This project is purely for acedemic purposes. All images are from stock image page.
 
 ## Acknowledgments
-* Tutorial videos from Humber College's Christine Bittle
+* Tutorial videos from Humber College's [@Christine Bittle](Christine.Bittle@humber.ca)
