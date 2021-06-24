@@ -20,29 +20,66 @@
   </div>
   <div>
     <label>Gender:</label>
-    <input type="radio" id="male" name="CustomerGender" value="Male">
-    <label for="male">Male</label>
-    <input type="radio" id="female" name="CustomerGender" value="Female">
-    <label for="female">Female</label>
-    <input type="radio" id="other" name="CustomerGender" value="Other">
-    <label for="other">Other</label>
+
+    @{
+      var checkMale = "";
+      var checkFemale = "";
+      var checkOther = "";
+      if (Model.SelectedCustomer.CustomerGender == "Male")
+      {
+        checkMale = "checked";
+      }
+      else if (Model.SelectedCustomer.CustomerGender == "Female")
+      {
+        checkFemale = "checked";
+      }
+      else
+      {
+        checkOther = "checked";
+      }
+      <input type="radio" id="male" name="CustomerGender" value="Male" @checkMale>
+      <label for="male">Male</label>
+      <input type="radio" id="female" name="CustomerGender" value="Female" @checkFemale>
+      <label for="female">Female</label>
+      <input type="radio" id="other" name="CustomerGender" value="Other" @checkOther>
+      <label for="other">Other</label>
+    }
+
   </div>
   <div>
     <label>Is Regular?</label>
-    <input type="radio" id="true" name="isRegular" value="True">
-    <label for="male">Yes</label>
-    <input type="radio" id="false" name="isRegular" value="False">
-    <label for="false">No</label>
+    @{
+      var checkTrue = "";
+      var checkFalse = "";
+      if (Model.SelectedCustomer.isRegular)
+      {
+        checkTrue = "checked";
+      }
+      else
+      {
+        checkFalse = "checked";
+      }
+      <input type="radio" id="true" name="isRegular" value="True" @checkTrue>
+      <label for="male">Yes</label>
+      <input type="radio" id="false" name="isRegular" value="False" @checkFalse>
+      <label for="false">No</label>
+    }
+
   </div>
   <div>
-    <label>Favorite Item:</label>
-    <select name="ItemID">
-      @foreach (var item in Model.ItemOptions)
-      {
-        <option value="@item.ItemID">@item.ItemName</option>
+      <label>Favorite Item:</label>
+      <select name="ItemID">
+        @foreach (var item in Model.ItemOptions)
+        {
+          var selected = "";
+          if(item.ItemID == Model.SelectedCustomer.ItemID)
+          {
+            selected = "selected";
+          }
+          <option value="@item.ItemID" @selected>@item.ItemName</option>
 
-      }
-    </select>
+        }
+      </select>
   </div>
   @*<div style="display:none;">
     <label>Favorite Item:</label><input type="text" name="ItemName" value="@Model.ItemName" />

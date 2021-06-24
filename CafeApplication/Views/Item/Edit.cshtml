@@ -1,6 +1,6 @@
 ﻿@model CafeApplication.Models.ItemDto
 @{
-    ViewBag.Title = "Edit";
+  ViewBag.Title = "Edit";
 }
 
 <h2>Edit</h2>
@@ -16,12 +16,35 @@
       </div>
       <div>
         <label>Item Unit:</label>
-        <select name="ItemUnit">
-          <option value="Slice">Slice</option>
-          <option value="Cup">Cup</option>
-          <option value="Bowl">Bowl</option>
-          <option value="Whole Cake">Whole Cake</option>
-        </select>
+        </div>
+      <select name="ItemUnit">
+        @{
+          var selectSlice = "";
+          var selectCup = "";
+          var selectBowl = "";
+          var selectWhole = "";
+          if (Model.ItemUnit == "Slice")
+          {
+            selectSlice = "selected";
+          }
+          else if (Model.ItemUnit == "Cup")
+          {
+            selectCup = "selected";
+          }
+          else if (Model.ItemUnit == "Bowl")
+          {
+            selectBowl = "selected";
+          }
+          else
+          {
+            selectWhole = "selected";
+          }
+          <option value="Slice" @selectSlice>Slice</option>
+          <option value="Cup" @selectCup>Cup</option>
+          <option value="Bowl" @selectBowl>Bowl</option>
+          <option value="Whole Cake" @selectWhole>Whole Cake</option>
+          }
+      </select>
       </div>
       <div>
         <label>Item Calories (calories)":</label> <input type="number" name="ItemCalories" value="@Model.ItemCalories" />
@@ -29,15 +52,15 @@
       <div>
         <label>Item Price (CAD)":</label> <input type="number" name="ItemPrice" min="0" value="@Model.ItemPrice" step=".01">
       </div>
+      <div class="col-md-6 col-sm-12">
+        <input type="file" name="ItemPic" />
+      </div>
       <div>
         <input type="submit" value="Update Item" />
 
       </div>
     </div>
-    <div class="col-md-6 col-sm-12">
-      <input type="file" name="ItemPic" />
-    </div>
-  </div>
-  
+    
+
 </form>
 
